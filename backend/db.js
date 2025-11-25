@@ -1,15 +1,10 @@
-// backend/db.js
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// If we are in production (Render), use the DATABASE_URL.
-// If we are on localhost, use the separate variables.
 const connectionConfig = process.env.DATABASE_URL
   ? {
       connectionString: process.env.DATABASE_URL,
-      ssl: {
-        rejectUnauthorized: false // Required for Neon.tech
-      }
+      ssl: { rejectUnauthorized: false }
     }
   : {
       host: process.env.DB_HOST || 'localhost',
