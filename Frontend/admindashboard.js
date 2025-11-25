@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // ✅ LIVE BACKEND CONNECTION
+    // This connects your Admin Panel to your Render Server
     const API_URL = "https://boundless-backend-cmli.onrender.com/api";
 
     const navItems = document.querySelectorAll(".admin-nav-item");
@@ -15,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (sectionId === "logout") {
                 sessionStorage.removeItem("bm_admin");
-                window.location.href = "index.html"; // Updated to index.html
+                window.location.href = "index.html"; // Redirects to Home page
                 return;
             }
 
@@ -165,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     const booking = bookings.find(b => b.id == id);
                     const body = { ...booking, status: "confirmed" };
+                    // Clean up fields the DB doesn't want in an UPDATE
                     delete body.id;
                     delete body.created_at;
                     delete body.updated_at;
