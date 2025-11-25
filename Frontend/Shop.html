@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Boundless Moments — Shop</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container nav">
+            <div class="brand">Boundless Moments</div>
+            <nav class="nav-links">
+                <a href="Home.html">Home</a>
+                <a href="About.html">About</a>
+                <a href="Portfolio.html">Portfolio</a>
+                <a href="Gallery.html">Gallery</a>
+                <a href="Services.html">Services</a>
+                <a href="Skills.html">Skills</a>
+                <a href="Testimonials.html">Testimonials</a>
+                <a href="Contact.html">Contact</a>
+                <a href="Booking.html">Booking</a>
+                <a href="Shop.html">Shop</a>
+                <a href="Admin.html">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="section">
+            <div class="container">
+                <div class="flex" style="justify-content: space-between;">
+                    <h1 class="fade-in">Print Store</h1>
+                    <div class="muted">Cart: <span id="cart-count" class="cart-badge">0</span></div>
+                </div>
+                <p class="muted fade-in">Limited edition prints. Add to cart to mock purchase.</p>
+                <div id="shop" class="shop-grid">
+                    <div class="card shop-item fade-in">
+                        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&auto=format&fit=crop&w=1200" alt="Print 1">
+                        <h3>Forest Veil</h3>
+                        <p class="muted">12" x 18" Matte</p>
+                        <div class="flex" style="justify-content: space-between;">
+                            <strong>$49.00</strong>
+                            <button class="button brand add-to-cart" data-id="p1" data-name="Forest Veil" data-price="49">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="card shop-item fade-in">
+                        <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&auto=format&fit=crop&w=1200" alt="Print 2">
+                        <h3>Coastal Glow</h3>
+                        <p class="muted">16" x 24" Glossy</p>
+                        <div class="flex" style="justify-content: space-between;">
+                            <strong>$69.00</strong>
+                            <button class="button brand add-to-cart" data-id="p2" data-name="Coastal Glow" data-price="69">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="card shop-item fade-in">
+                        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&auto=format&fit=crop&w=1200" alt="Print 3">
+                        <h3>Alpine Dawn</h3>
+                        <p class="muted">18" x 24" Canvas</p>
+                        <div class="flex" style="justify-content: space-between;">
+                            <strong>$89.00</strong>
+                            <button class="button brand add-to-cart" data-id="p3" data-name="Alpine Dawn" data-price="89">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="card shop-item fade-in">
+                        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&auto=format&fit=crop&w=1200" alt="Print 4">
+                        <h3>Woodland Path</h3>
+                        <p class="muted">12" x 18" Matte</p>
+                        <div class="flex" style="justify-content: space-between;">
+                            <strong>$49.00</strong>
+                            <button class="button brand add-to-cart" data-id="p4" data-name="Woodland Path" data-price="49">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spacer"></div>
+                <h2 class="fade-in">Your Cart</h2>
+                <div id="cart-list" class="grid"></div>
+                <div class="flex" style="justify-content: space-between; margin-top: 12px;">
+                    <strong>Total: <span id="cart-total">$0.00</span></strong>
+                </div>
+
+                <div class="spacer"></div>
+                <h2 class="fade-in">Checkout</h2>
+                
+                <form id="checkout" class="form card fade-in" data-validate>
+                    <div class="row">
+                        <label class="field"><span>Full Name</span><input class="input" name="customer_name" required></label>
+                        <label class="field"><span>Email</span><input class="input" type="email" name="customer_email" required></label>
+                    </div>
+                    <div class="row">
+                        <label class="field"><span>Address</span><input class="input" name="shipping_address" required></label>
+                        <label class="field"><span>Phone (Optional)</span><input class="input" type="tel" name="customer_phone"></label>
+                    </div>
+                    <div class="row">
+                        <label class="field"><span>Card Number (mock)</span><input class="input" required></label>
+                        <label class="field"><span>Expiry (mock)</span><input class="input" required></label>
+                    </div>
+                    <button class="button brand" type="submit">Place Order</button>
+                </form>
+                </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container inner">
+            <div class="muted">© <span id="year"></span> Boundless Moments</div>
+            <div class="social">
+                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    <script src="script.js"></script>
+</body>
+</html>

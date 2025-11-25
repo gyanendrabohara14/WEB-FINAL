@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boundless Moments — Admin Dashboard</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* 1. Button Colors */
+    .button.success {
+        background-color: #28a745; /* Green */
+        color: white;
+    }
+    .button.danger {
+        background-color: #dc3545; /* Red */
+        color: white;
+    }
+    .button.info {
+        background-color: #17a2b8; /* Blue */
+        color: white;
+    }
+
+    /* 2. Button Layout */
+    .action-buttons .button {
+        display: block;  /* Make each button a block, so they stack */
+        width: 90%;      /* Make them a consistent width */
+        margin: 5px auto; /* 5px top/bottom, and 'auto' to center horizontally */
+        box-sizing: border-box; 
+    }
+
+    /* 3. Vertically center all table cell content */
+    .admin-table td {
+        vertical-align: middle; /* This is the key for the text cells */
+        padding-top: 10px;      /* This gives the row breathing room */
+        padding-bottom: 10px;
+    }
+
+    /* --- 4. NEW: Gallery Grid Layout --- */
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+    }
+
+    /* --- 5. NEW: Gallery Item & Image Size --- */
+    .gallery-item {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 150px; 
+        object-fit: cover; 
+        display: block;
+    }
+
+    .gallery-item .button.delete {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: auto; 
+        margin: 0;
+        opacity: 0.8;
+        transition: opacity 0.2s ease;
+    }
+    .gallery-item:hover .button.delete {
+        opacity: 1;
+    }
+  </style>
+  </head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <div class="brand">Boundless Moments</div>
+      <nav class="nav-links">
+        <a href="Home.html">Home</a>
+        <a href="About.html">About</a>
+        <a href="Portfolio.html">Portfolio</a>
+        <a href="Gallery.html">Gallery</a>
+        <a href="Services.html">Services</a>
+        <a href="Skills.html">Skills</a>
+        <a href="Testimonials.html">Testimonials</a>
+        <a href="Contact.html">Contact</a>
+        <a href="Booking.html">Booking</a>
+        <a href="Shop.html">Shop</a>
+        <a href="admindashboard.html">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div id="admin-dashboard" class="admin-panel">
+          <div class="admin-sidebar">
+            <h2>Admin Panel</h2>
+            <nav class="admin-nav">
+              <a href="#dashboard" class="admin-nav-item active" data-section="dashboard">
+                <i class="fa-solid fa-tachometer-alt"></i> Dashboard
+              </a>
+              <a href="#inquiries" class="admin-nav-item" data-section="inquiries">
+                <i class="fa-solid fa-envelope"></i> View Inquiries
+              </a>
+              <a href="#bookings" class="admin-nav-item" data-section="bookings">
+                <i class="fa-solid fa-calendar-check"></i> View Bookings
+              </a>
+              <a href="#orders" class="admin-nav-item" data-section="orders">
+                <i class="fa-solid fa-file-invoice-dollar"></i> View Orders
+              </a>
+              <a href="#users" class="admin-nav-item" data-section="users">
+                <i class="fa-solid fa-users"></i> Manage Users
+              </a>
+              <a href="#gallery" class="admin-nav-item" data-section="gallery">
+                <i class="fa-solid fa-images"></i> Manage Gallery
+              </a>
+              <a href="#testimonials" class="admin-nav-item" data-section="testimonials">
+                <i class="fa-solid fa-quote-left"></i> Manage Testimonials
+              </a>
+              <a href="#shop" class="admin-nav-item" data-section="shop">
+                <i class="fa-solid fa-shopping-cart"></i> Manage Shop
+              </a>
+              <a href="#logout" class="admin-nav-item" data-section="logout">
+                <i class="fa-solid fa-sign-out-alt"></i> Logout
+              </a>
+            </nav>
+          </div>
+
+          <div class="admin-content">
+            <div id="dashboard-section" class="admin-section active">
+              <h1>Dashboard Overview</h1>
+              <p>Welcome to the Boundless Moments admin panel.</p>
+              <div class="dashboard-stats">
+                <div class="stat-card">
+                  <div class="stat-icon"><i class="fa-solid fa-envelope"></i></div>
+                  <div class="stat-content">
+                    <div class="stat-number" id="total-inquiries">0</div>
+                    <div class="stat-label">New Inquiries</div>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                  <div class="stat-content">
+                    <div class="stat-number" id="total-bookings">0</div>
+                    <div class="stat-label">Pending Bookings</div>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                  <div class="stat-content">
+                    <div class="stat-number" id="total-users">0</div>
+                    <div class="stat-label">Registered Users</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="inquiries-section" class="admin-section">
+              <div class="section-header">
+                <h1>View Inquiries</h1>
+                <button class="button brand" id="refresh-inquiries"><i class="fa-solid fa-refresh"></i> Refresh</button>
+              </div>
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ID</th><th>Name</th><th>Email</th><th>Subject</th><th>Date</th><th>Status</th><th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="inquiries-list"></tbody>
+              </table>
+            </div>
+
+            <div id="bookings-section" class="admin-section">
+              <div class="section-header">
+                <h1>View Bookings</h1>
+                <button class="button brand" id="refresh-bookings"><i class="fa-solid fa-refresh"></i> Refresh</button>
+              </div>
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ID</th><th>Name</th><th>Email</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="bookings-list"></tbody>
+              </table>
+            </div>
+
+            <div id="orders-section" class="admin-section">
+              <div class="section-header">
+                <h1>View Orders</h1>
+                <button class="button brand" id="refresh-orders"><i class="fa-solid fa-refresh"></i> Refresh</button>
+              </div>
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-list"></tbody>
+              </table>
+            </div>
+
+            <div id="users-section" class="admin-section">
+              <h1>Manage Users</h1>
+              <form id="add-user-form" class="admin-form">
+                <h3>Add New User</h3>
+                <div class="form-row">
+                    <label class="form-field">
+                        <span>Username</span>
+                        <input class="input" type="text" id="add-user-username" required>
+                    </label>
+                    <label class="form-field">
+                        <span>Email</span>
+                        <input class="input" type="email" id="add-user-email" required>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="form-field">
+                        <span>Password</span>
+                        <input class="input" type="password" id="add-user-password" required>
+                    </label>
+                    <label class="form-field">
+                        <span>Role</span>
+                        <select id="add-user-role" class="select">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </label>
+                </div>
+                <button type="submit" class="button brand">Add User</button>
+              </form>
+              <hr style="margin: 24px 0;"> 
+              <table class="admin-table">
+                <thead>
+                  <tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="users-list"></tbody>
+              </table>
+            </div>
+
+            <div id="gallery-section" class="admin-section">
+              <h1>Manage Gallery</h1>
+              <form id="add-gallery-form" class="admin-form">
+                <h3>Add New Image</h3>
+                <div class="form-row">
+                    <label class="form-field">
+                        <span>Image URL</span>
+                        <input class="input" type="text" id="add-gallery-url" placeholder="https://example.com/image.jpg" required>
+                    </label>
+                    <label class="form-field">
+                        <span>Thumbnail URL (Optional)</span>
+                        <input class="input" type="text" id="add-gallery-thumb" placeholder="https://example.com/thumb.jpg">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="form-field">
+                        <span>Title (Optional)</span>
+                        <input class="input" type="text" id="add-gallery-title">
+                    </label>
+                    <label class="form-field">
+                        <span>Category</span>
+                        <select id="add-gallery-category" class="select">
+                            <option value="general">General</option>
+                            <option value="wedding">Wedding</option>
+                            <option value="portrait">Portrait</option>
+                            <option value="event">Event</option>
+                            <option value="nature">Nature</option>
+                            <option value="product">Product</option>
+                        </select>
+                    </label>
+                </div>
+                <label class="form-field">
+                    <span>Description (Optional)</span>
+                    <textarea id="add-gallery-desc" class="textarea"></textarea>
+                </label>
+                <button type="submit" class="button brand">Add Image</button>
+              </form>
+              <hr style="margin: 24px 0;">
+              
+              <div class="gallery-manager gallery-grid" id="gallery-manager-grid"></div>
+            </div>
+            
+            <div id="testimonials-section" class="admin-section">
+              <h1>Manage Testimonials</h1>
+              <form id="add-testimonial-form" class="admin-form">
+                <h3>Add New Testimonial</h3>
+                <div class="form-row">
+                    <label class="form-field">
+                        <span>Client Name</span>
+                        <input class="input" type="text" id="add-testimonial-name" required>
+                    </label>
+                    <label class="form-field">
+                        <span>Client Image URL (Optional)</span>
+                        <input class="input" type="text" id="add-testimonial-image" placeholder="https://example.com/avatar.jpg">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="form-field">
+                        <span>Service Type</span>
+                        <select id="add-testimonial-service" class="select" required>
+                            <option value="wedding">Wedding</option>
+                            <option value="portrait">Portrait</option>
+                            <option value="event">Event</option>
+                            <option value="nature">Nature</option>
+                            <option value="product">Product</option>
+                        </select>
+                    </label>
+                     <label class="form-field">
+                        <span>Rating (1-5)</span>
+                        <input class="input" type="number" id="add-testimonial-rating" min="1" max="5" value="5" required>
+                    </label>
+                </div>
+                <label class="form-field">
+                    <span>Testimonial Text</span>
+                    <textarea id="add-testimonial-text" class="textarea" required></textarea>
+                </label>
+                <button type="submit" class="button brand">Add Testimonial</button>
+              </form>
+              <hr style="margin: 24px 0;">
+              <div class="testimonials-manager" id="testimonials-list"></div>
+            </div>
+
+            <div id="shop-section" class="admin-section">
+              <h1>Manage Shop</h1>
+              
+              <form id="add-product-form" class="admin-form">
+                <h3>Add New Product</h3>
+                <div class="form-row">
+                    <label class="form-field">
+                        <span>Product Name</span>
+                        <input class="input" type="text" id="add-product-name" required>
+                    </label>
+                    <label class="form-field">
+                        <span>Price ($)</span>
+                        <input class="input" type="number" id="add-product-price" step="0.01" min="0" required>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="form-field">
+                        <span>Image URL</span>
+                        <input class="input" type="text" id="add-product-image" placeholder="https://example.com/product.jpg" required>
+                    </label>
+                    <label class="form-field">
+                        <span>Category</span>
+                        <select id="add-product-category" class="select">
+                            <option value="prints">Prints</option>
+                            <option value="albums">Albums</option>
+                            <option value="digital">Digital</option>
+                            <option value="merchandise">Merchandise</option>
+                        </select>
+                    </label>
+                </div>
+                <label class="form-field">
+                    <span>Description (Optional)</span>
+                    <textarea id="add-product-desc" class="textarea"></textarea>
+                </label>
+                <button type="submit" class="button brand">Add Product</button>
+              </form>
+              <hr style="margin: 24px 0;">
+              
+              <div class="shop-manager" id="shop-items-list"></div>
+            </div>
+            </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container inner">
+      <div class="muted">© <span id="year"></span> Boundless Moments</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+  <script src="admindashboard.js"></script>
+</body>
+</html>
