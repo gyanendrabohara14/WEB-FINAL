@@ -1,5 +1,8 @@
 /* Boundless Moments - Shared JS */
 (function() {
+    // ✅ LIVE BACKEND CONNECTION
+    const API_URL = "https://boundless-backend-cmli.onrender.com/api";
+
     const $ = (sel, root = document) => root.querySelector(sel);
     const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -26,7 +29,8 @@
         gallery.innerHTML = "<p>Loading gallery...</p>"; 
 
         try {
-            const res = await fetch("http://localhost:3000/api/gallery");
+            // ✅ Updated URL
+            const res = await fetch(`${API_URL}/gallery`);
             if (!res.ok) throw new Error("Failed to load gallery");
             
             const images = await res.json();
@@ -49,7 +53,8 @@
         if (!container) return; 
 
         try {
-            const res = await fetch("http://localhost:3000/api/testimonials");
+            // ✅ Updated URL
+            const res = await fetch(`${API_URL}/testimonials`);
             if (!res.ok) throw new Error("Failed to load testimonials");
             
             const testimonials = await res.json();
@@ -87,11 +92,9 @@
         const container = $('#shop'); // Find the shop grid
         if (!container) return; // Only run on shop page
 
-        // We are NOT clearing the HTML
-        // container.innerHTML = "<p>Loading products...</p>"; 
-
         try {
-            const res = await fetch("http://localhost:3000/api/products");
+            // ✅ Updated URL
+            const res = await fetch(`${API_URL}/products`);
             if (!res.ok) throw new Error("Failed to load products");
 
             const products = await res.json();
@@ -249,7 +252,6 @@
         }
 
         // 2. Add the "Add to Cart" listener using Event Delegation
-        // This now works for STATIC and DYNAMIC items
         if (shopContainer) {
             shopContainer.addEventListener('click', (e) => {
                 const btn = e.target.closest('.add-to-cart');
@@ -287,7 +289,7 @@
             renderCart();
         }
 
-        // 4. Checkout logic (This is your existing, correct code)
+        // 4. Checkout logic
         if (checkout) {
             checkout.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -306,7 +308,8 @@
                 const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
                 try {
-                    const orderRes = await fetch('http://localhost:3000/api/orders', {
+                    // ✅ Updated URL
+                    const orderRes = await fetch(`${API_URL}/orders`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -329,12 +332,12 @@
                         // Check if item.id is a real database ID (a number) or a static one (like "p1")
                         const isStaticItem = isNaN(parseInt(item.id));
                         
-                        return fetch('http://localhost:3000/api/order-items', {
+                        // ✅ Updated URL
+                        return fetch(`${API_URL}/order-items`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 order_id: newOrderId,
-                                // If it's static, use a placeholder. If dynamic, use the real ID.
                                 product_id: isStaticItem ? 1 : parseInt(item.id), 
                                 quantity: item.qty,
                                 price: item.price
@@ -375,7 +378,8 @@
             err.textContent = '';
 
             try {
-                const response = await fetch('http://localhost:3000/api/users/login', {
+                // ✅ Updated URL
+                const response = await fetch(`${API_URL}/users/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -413,7 +417,8 @@
             };
 
             try {
-                const response = await fetch("http://localhost:3000/api/inquiries", {
+                // ✅ Updated URL
+                const response = await fetch(`${API_URL}/inquiries`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -455,7 +460,8 @@
             };
 
             try {
-                const res = await fetch('http://localhost:3000/api/bookings', {
+                // ✅ Updated URL
+                const res = await fetch(`${API_URL}/bookings`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -481,7 +487,7 @@
         // Load dynamic content
         await loadPublicGallery(); 
         await loadPublicTestimonials(); 
-        await loadPublicShop(); // <-- This now appends dynamic products
+        await loadPublicShop(); 
         
         // Init filters AFTER content is loaded
         initGalleryFilter(); 
@@ -492,7 +498,7 @@
         // Init forms and other interactive elements
         initForms();
         initCalendar();
-        initShop(); // <-- This is now updated for dynamic buttons
+        initShop();
         initAdmin();
         initContactForm();
         initBookingForm();
