@@ -6,8 +6,27 @@
     const $ = (sel, root = document) => root.querySelector(sel);
     const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
+    // Store booked dates globally so both Calendar and Form can use them
+    let GLOBAL_BOOKED_DATES = [];
+
     // ---------------------------
-    // NEW: Mobile Hamburger Menu Logic
+    // Helper to fetch booked dates from API
+    // ---------------------------
+    async function fetchBookedDates() {
+        try {
+            const res = await fetch(`${API_URL}/bookings`);
+            if (!res.ok) return [];
+            const bookings = await res.json();
+            // Extract just the 'YYYY-MM-DD' string from each booking
+            return bookings.map(b => new Date(b.booking_date).toISOString().split('T')[0]);
+        } catch (e) {
+            console.error("Failed to load blocked dates", e);
+            return [];
+        }
+    }
+
+    // ---------------------------
+    // Mobile Hamburger Menu Logic
     // ---------------------------
     function initMobileMenu() {
         const hamburger = $('#hamburger');
@@ -15,10 +34,7 @@
 
         if (hamburger && navLinks) {
             hamburger.addEventListener('click', () => {
-                // Toggle the active class to slide menu in/out
                 navLinks.classList.toggle('active');
-
-                // Switch icon between bars and X
                 const icon = hamburger.querySelector('i');
                 if (navLinks.classList.contains('active')) {
                     icon.classList.remove('fa-bars');
@@ -48,13 +64,15 @@
         });
     }
 
+    // ---------------------------
+    // Load Gallery
+    // ---------------------------
     async function loadPublicGallery() {
         const gallery = $('#gallery');
         if (!gallery) return; 
         gallery.innerHTML = "<p>Loading gallery...</p>"; 
 
         try {
-            // ✅ Updated URL
             const res = await fetch(`${API_URL}/gallery`);
             if (!res.ok) throw new Error("Failed to load gallery");
             
@@ -73,12 +91,14 @@
         }
     }
     
+    // ---------------------------
+    // Load Testimonials
+    // ---------------------------
     async function loadPublicTestimonials() {
         const container = $('.testimonials'); 
         if (!container) return; 
 
         try {
-            // ✅ Updated URL
             const res = await fetch(`${API_URL}/testimonials`);
             if (!res.ok) throw new Error("Failed to load testimonials");
             
@@ -111,21 +131,19 @@
     }
 
     // ---------------------------
-    // UPDATED FUNCTION TO LOAD DYNAMIC PRODUCTS
+    // Load Shop
     // ---------------------------
     async function loadPublicShop() {
-        const container = $('#shop'); // Find the shop grid
-        if (!container) return; // Only run on shop page
+        const container = $('#shop');
+        if (!container) return;
 
         try {
-            // ✅ Updated URL
             const res = await fetch(`${API_URL}/products`);
             if (!res.ok) throw new Error("Failed to load products");
 
             const products = await res.json();
-            if (products.length === 0) return; // No new products to add
+            if (products.length === 0) return;
 
-            // Generate HTML for new products
             const productHtml = products.map(item => `
                 <div class="card shop-item fade-in">
                     <img src="${item.image_url}" alt="${item.name}">
@@ -143,7 +161,6 @@
                 </div>
             `).join("");
 
-            // Append new products to the existing static ones
             container.insertAdjacentHTML('beforeend', productHtml);
 
         } catch (err) {
@@ -151,7 +168,6 @@
             container.insertAdjacentHTML('beforeend', '<p>Error loading new products.</p>');
         }
     }
-
 
     function initGalleryFilter() {
         const container = $('#gallery-filter');
@@ -195,18 +211,36 @@
         });
     }
 
-    function initCalendar() {
+    // ---------------------------
+    // UPDATED: Visual Calendar with Hardcoded DEMO Dates
+    // ---------------------------
+    async function initCalendar() {
         const cal = $('#calendar');
         if (!cal) return;
 
         const today = new Date();
         const year = today.getFullYear();
-        const month = today.getMonth();
+        const month = today.getMonth(); // 0-indexed (0 = Jan)
+
+        // 1. Get Real Bookings from Database
+        const apiBookings = await fetchBookedDates();
+
+        // 2. Create Hardcoded Demo Dates for CURRENT MONTH (7, 13, 23, 29)
+        // Format: "YYYY-MM-DD"
+        // Note: Month needs +1 for string format because getMonth() is 0-indexed
+        const monthStr = String(month + 1).padStart(2, '0'); 
+        const demoDates = [7, 13, 23, 29].map(day => {
+            return `${year}-${monthStr}-${String(day).padStart(2, '0')}`;
+        });
+
+        // 3. Merge Real + Demo Dates
+        // Use Set to remove duplicates if database matches demo dates
+        GLOBAL_BOOKED_DATES = [...new Set([...apiBookings, ...demoDates])];
+
         const first = new Date(year, month, 1);
         const startDay = first.getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        const bookedDates = (window.BOOKED_DATES || [5, 9, 14, 18, 23]);
         const header = cal.querySelector('.calendar-header');
         const grid = cal.querySelector('.grid');
         header.textContent = today.toLocaleString(undefined, {
@@ -214,14 +248,27 @@
             year: 'numeric'
         });
 
+        // Clear existing grid
+        grid.innerHTML = '';
+
         for (let i = 0; i < startDay; i++) grid.appendChild(document.createElement('div'));
 
         for (let d = 1; d <= daysInMonth; d++) {
             const div = document.createElement('div');
             div.className = 'day';
             div.textContent = d;
+            
             if (d === today.getDate()) div.classList.add('today');
-            if (bookedDates.includes(d)) div.classList.add('booked');
+            
+            // Check if this specific day matches our GLOBAL list
+            // Construct YYYY-MM-DD for current grid item to check against list
+            const currentDayStr = `${year}-${monthStr}-${String(d).padStart(2, '0')}`;
+            
+            if (GLOBAL_BOOKED_DATES.includes(currentDayStr)) {
+                div.classList.add('booked'); // This adds the RED styling
+                div.title = "Fully Booked";
+            }
+            
             grid.appendChild(div);
         }
     }
@@ -246,18 +293,14 @@
         $$('#cart-count').forEach(el => el.textContent = String(count));
     }
 
-    // ---------------------------
-    // UPDATED initShop FUNCTION
-    // ---------------------------
     function initShop() {
-        updateCartBadge(); // For the header
+        updateCartBadge(); 
         
         const list = $('#cart-list');
         const totalEl = $('#cart-total');
         const checkout = $('#checkout');
-        const shopContainer = $('#shop'); // The main grid
+        const shopContainer = $('#shop'); 
 
-        // 1. Define renderCart in the main initShop scope
         function renderCart() {
             if (!list || !totalEl) return; 
 
@@ -276,7 +319,6 @@
             updateCartBadge(); 
         }
 
-        // 2. Add the "Add to Cart" listener using Event Delegation
         if (shopContainer) {
             shopContainer.addEventListener('click', (e) => {
                 const btn = e.target.closest('.add-to-cart');
@@ -298,7 +340,6 @@
             });
         }
 
-        // 3. Add the "Remove from Cart" listener
         if (list && totalEl) {
             list.addEventListener('click', (e) => {
                 const btn = e.target.closest('.remove');
@@ -309,16 +350,12 @@
                 writeCart(cart); 
                 renderCart(); 
             });
-
-            // Initial render on page load
             renderCart();
         }
 
-        // 4. Checkout logic
         if (checkout) {
             checkout.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                
                 let ok = true;
                 $$('input[required]', checkout).forEach(r => { if (!r.value.trim()) ok = false; });
                 if (!ok) { alert('Please complete all required fields.'); return; }
@@ -333,7 +370,6 @@
                 const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
                 try {
-                    // ✅ Updated URL
                     const orderRes = await fetch(`${API_URL}/orders`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -349,15 +385,11 @@
                     });
 
                     if (!orderRes.ok) throw new Error('Failed to create order');
-                    
                     const newOrder = await orderRes.json();
                     const newOrderId = newOrder.id;
 
                     const itemPromises = cart.map(item => {
-                        // Check if item.id is a real database ID (a number) or a static one (like "p1")
                         const isStaticItem = isNaN(parseInt(item.id));
-                        
-                        // ✅ Updated URL
                         return fetch(`${API_URL}/order-items`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -371,7 +403,6 @@
                     });
 
                     await Promise.all(itemPromises);
-
                     localStorage.removeItem(CART_KEY); 
                     updateCartBadge();
                     renderCart(); 
@@ -403,14 +434,10 @@
             err.textContent = '';
 
             try {
-                // ✅ Updated URL
                 const response = await fetch(`${API_URL}/users/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: u,
-                        password: p
-                    })
+                    body: JSON.stringify({ username: u, password: p })
                 });
 
                 if (response.ok) {
@@ -419,7 +446,6 @@
                 } else {
                     err.textContent = 'Invalid credentials. Please try again.';
                 }
-
             } catch (error) {
                 console.error('Login fetch error:', error);
                 err.textContent = 'Could not connect to the server.';
@@ -442,12 +468,9 @@
             };
 
             try {
-                // ✅ Updated URL
                 const response = await fetch(`${API_URL}/inquiries`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(inquiryData)
                 });
 
@@ -464,38 +487,58 @@
         });
     }
 
+    // ---------------------------
+    // UPDATED: Booking Form Logic
+    // ---------------------------
     function initBookingForm() {
         const form = $('form[data-validate]');
-        if (!form || !form.querySelector('input[type="date"]')) return;
+        if (!form) return;
+        
+        const dateInput = form.querySelector('input[name="date"]');
+        if (!dateInput) return;
+
+        // 1. Set Min Date to Tomorrow (Prevents clicking past dates)
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1); 
+        const minDate = tomorrow.toISOString().split('T')[0];
+        dateInput.min = minDate;
+
+        // 2. Add Listener to block booked dates instantly
+        dateInput.addEventListener('change', () => {
+            const selected = dateInput.value;
+            // Check if selected date is in our combined booked list
+            if (GLOBAL_BOOKED_DATES.includes(selected)) {
+                alert("Sorry, this date is already fully booked. Please choose another date.");
+                dateInput.value = ""; // Clear the invalid selection
+            }
+        });
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(form);
-            const booking_time = '10:00:00'; 
             const booking = {
                 name: formData.get('name'),
                 email: formData.get('email'),
-                phone: formData.get('phone') || null,
                 service_type: formData.get('service'),
                 booking_date: formData.get('date'),
-                booking_time,
-                location: formData.get('location') || null,
+                booking_time: '10:00:00', 
                 notes: formData.get('notes'),
                 status: 'pending'
             };
 
             try {
-                // ✅ Updated URL
                 const res = await fetch(`${API_URL}/bookings`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(booking)
                 });
                 if (!res.ok) throw new Error('Failed to create booking');
+                
                 alert('Booking request submitted successfully! We\'ll confirm your appointment soon.');
                 form.reset();
+                // Re-fetch bookings so calendar updates instantly without reload
+                initCalendar(); 
             } catch (err) {
                 console.error(err);
                 alert('Error submitting booking. Please try again.');
@@ -504,31 +547,26 @@
     }
 
     // ---------------------------
-    // UPDATED DOMContentLoaded
+    // DOMContentLoaded
     // ---------------------------
     document.addEventListener('DOMContentLoaded', async () => {
-        // Initialize Mobile Menu
         initMobileMenu();
-
         setActiveNav();
         
-        // Load dynamic content
         await loadPublicGallery(); 
         await loadPublicTestimonials(); 
         await loadPublicShop(); 
         
-        // Init filters AFTER content is loaded
         initGalleryFilter(); 
-
-        // Run animations AFTER dynamic content is added
         enableFadeIn(); 
 
-        // Init forms and other interactive elements
         initForms();
-        initCalendar();
         initShop();
         initAdmin();
         initContactForm();
-        initBookingForm();
+        
+        // Init these LAST so they can fetch data safely
+        await initCalendar();
+        initBookingForm(); 
     });
 })();
