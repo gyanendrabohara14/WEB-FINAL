@@ -413,11 +413,9 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* =======================================================
-   MOBILE RESPONSIVENESS (Hamburger & Layout)
+   MOBILE RESPONSIVENESS (Hamburger & Compact Layout)
    ======================================================= */
 
-/* --- Hamburger Menu Button Styles --- */
-/* Initially hide the hamburger button on Desktop */
 .hamburger {
     display: none;
     background: none;
@@ -426,7 +424,7 @@ a { color: inherit; text-decoration: none; }
     cursor: pointer;
     color: var(--text); 
     padding: 10px;
-    z-index: 1001; /* Ensure it sits above the mobile menu */
+    z-index: 1001; 
 }
 
 @media (max-width: 1024px) {
@@ -436,7 +434,6 @@ a { color: inherit; text-decoration: none; }
     .testimonials { grid-template-columns: repeat(2, 1fr); }
     .shop-grid { grid-template-columns: repeat(3, 1fr); }
     
-    /* Admin Tablet Adjustments */
     .admin-panel { grid-template-columns: 1fr; }
     .admin-sidebar { margin-bottom: 20px; }
 }
@@ -444,7 +441,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 768px) {
     /* 1. Header Layout */
     .nav {
-        flex-direction: row; /* Keep logo and burger side-by-side */
+        flex-direction: row; 
         justify-content: space-between;
         align-items: center;
         position: relative;
@@ -459,28 +456,28 @@ a { color: inherit; text-decoration: none; }
     .nav-links {
         position: fixed;
         top: 0;
-        right: -100%; /* Hidden off-screen to the right */
+        right: -100%; /* Hidden off-screen */
         height: 100vh;
-        width: 75%; /* Width of the menu */
-        background-color: var(--bg-elev); /* Match your theme background */
+        width: 75%; /* Covers 75% of screen */
+        background-color: var(--bg-elev); 
         display: flex;
         flex-direction: column;
         align-items: center;
         
-        /* FIX: Start from top so we can scroll down */
+        /* FIX: Start from top */
         justify-content: flex-start; 
         
-        /* FIX: Allow scrolling if the menu is too tall */
+        /* FIX: Allow scrolling if menu is too tall */
         overflow-y: auto; 
         
         transition: right 0.3s ease-in-out;
         box-shadow: -5px 0 15px rgba(0,0,0,0.5);
         z-index: 1000;
-        gap: 20px;
         
-        /* FIX: Add more padding so top/bottom items are easy to reach */
-        padding-top: 80px; 
-        padding-bottom: 40px;
+        /* COMPACT SPACING SETTINGS */
+        gap: 10px; /* Reduced space between items */
+        padding-top: 70px; 
+        padding-bottom: 20px;
     }
 
     /* 4. Active State (Slide in) */
@@ -490,13 +487,13 @@ a { color: inherit; text-decoration: none; }
 
     /* 5. Mobile Menu Links */
     .nav-links a {
-        font-size: 1.2rem;
+        font-size: 1.1rem; /* Slightly smaller text */
         width: 100%;
         text-align: center;
-        padding: 15px 0;
+        padding: 10px 0; /* Reduced padding */
         color: var(--text);
         border-bottom: 1px solid rgba(255,255,255,0.05);
-        flex-shrink: 0; /* Prevent links from shrinking */
+        flex-shrink: 0;
     }
     
     .nav-links a:hover {
@@ -504,17 +501,13 @@ a { color: inherit; text-decoration: none; }
     }
 
     /* --- General Layout Adjustments --- */
-    /* Hero Text */
     .hero h1 { font-size: 2.5rem; }
     
-    /* Force Single Column Grids */
     .grid-2, .grid-3, .grid-4, .pricing, .testimonials, .shop-grid { 
         grid-template-columns: 1fr !important; 
     }
     
-    /* Forms */
-    .form .row { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
+    .form .row, .form-row { grid-template-columns: 1fr; }
 
     /* Admin Dashboard Mobile */
     .dashboard-stats { grid-template-columns: 1fr; }
