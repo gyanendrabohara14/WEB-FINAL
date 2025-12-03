@@ -3,17 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const API_URL = "https://boundless-backend-cmli.onrender.com/api";
 
     // -------------------------------
-    // NEW: Mobile Hamburger Menu Logic
+    // Mobile Hamburger Menu Logic
     // -------------------------------
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
 
     if (hamburger && navLinks) {
         hamburger.addEventListener('click', () => {
-            // Toggle the menu visibility
             navLinks.classList.toggle('active');
-
-            // Switch the icon between bars and X
             const icon = hamburger.querySelector('i');
             if (navLinks.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
@@ -36,11 +33,13 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const sectionId = item.dataset.section;
 
+            // --- FIX IS HERE ---
             if (sectionId === "logout") {
                 sessionStorage.removeItem("bm_admin");
-                window.location.href = "index.html"; // Redirects to Home page
+                window.location.href = "Home.html"; // Changed from index.html to Home.html
                 return;
             }
+            // -------------------
 
             navItems.forEach(i => i.classList.remove("active"));
             sections.forEach(sec => sec.classList.remove("active"));
@@ -48,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
             item.classList.add("active");
             document.getElementById(`${sectionId}-section`).classList.add("active");
 
-            // Clear badge when section opened
             const badge = item.querySelector(".badge");
             if (badge) badge.style.display = "none";
         });
@@ -114,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const newCount = inquiries.filter(i => i.status === "new").length;
             updateBadge("inquiries", newCount);
             
-            // Update dashboard counters safely
             const bookingsEl = document.getElementById("total-bookings");
             const usersEl = document.getElementById("total-users");
             if(bookingsEl && usersEl) {
@@ -188,7 +185,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     const booking = bookings.find(b => b.id == id);
                     const body = { ...booking, status: "confirmed" };
-                    // Clean up fields the DB doesn't want in an UPDATE
                     delete body.id;
                     delete body.created_at;
                     delete body.updated_at;
