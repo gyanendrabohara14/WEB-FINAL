@@ -1,7 +1,29 @@
 document.addEventListener("DOMContentLoaded", () => {
     // ✅ LIVE BACKEND CONNECTION
-    // This connects your Admin Panel to your Render Server
     const API_URL = "https://boundless-backend-cmli.onrender.com/api";
+
+    // -------------------------------
+    // NEW: Mobile Hamburger Menu Logic
+    // -------------------------------
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            // Toggle the menu visibility
+            navLinks.classList.toggle('active');
+
+            // Switch the icon between bars and X
+            const icon = hamburger.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        });
+    }
 
     const navItems = document.querySelectorAll(".admin-nav-item");
     const sections = document.querySelectorAll(".admin-section");

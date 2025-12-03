@@ -6,6 +6,31 @@
     const $ = (sel, root = document) => root.querySelector(sel);
     const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
+    // ---------------------------
+    // NEW: Mobile Hamburger Menu Logic
+    // ---------------------------
+    function initMobileMenu() {
+        const hamburger = $('#hamburger');
+        const navLinks = $('#nav-links');
+
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => {
+                // Toggle the active class to slide menu in/out
+                navLinks.classList.toggle('active');
+
+                // Switch icon between bars and X
+                const icon = hamburger.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+    }
+
     function setActiveNav() {
         const path = location.pathname.replace(/\\/g, '/');
         $$('.nav-links a').forEach(a => {
@@ -482,6 +507,9 @@
     // UPDATED DOMContentLoaded
     // ---------------------------
     document.addEventListener('DOMContentLoaded', async () => {
+        // Initialize Mobile Menu
+        initMobileMenu();
+
         setActiveNav();
         
         // Load dynamic content

@@ -80,23 +80,23 @@ a { color: inherit; text-decoration: none; }
 .filter-btn { padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.03); color: var(--muted); cursor: pointer; transition: all .2s ease; }
 .filter-btn.active, .filter-btn:hover { color: var(--text); background: linear-gradient(90deg, rgba(110,193,228,0.2), rgba(183,140,247,0.2)); }
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
 }
 
 .gallery .item {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
 }
 .gallery .item img {
-    width: 100%;
-    height: auto; 
-    aspect-ratio: 4 / 3;  
-    object-fit: cover;    
-    display: block;
-    transition: transform .25s ease, filter .25s ease;
+  width: 100%;
+  height: auto; 
+  aspect-ratio: 4 / 3;  
+  object-fit: cover;    
+  display: block;
+  transition: transform .25s ease, filter .25s ease;
 }
 .gallery .item:hover img { transform: scale(1.03); filter: saturate(1.1); }
 .hidden { display: none !important; }
@@ -386,12 +386,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 .shop-item-content h4, .testimonial-content h4 {
-    color: #2c3e50;
-    margin: 0 0 5px 0;
+   color: #2c3e50;
+   margin: 0 0 5px 0;
 }
 .shop-item-content p, .testimonial-content p {
-    color: #7f8c8d;
-    margin: 0;
+   color: #7f8c8d;
+   margin: 0;
 }
 
 /* Footer */
@@ -413,55 +413,105 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* =======================================================
-   MOBILE RESPONSIVENESS (UPDATED)
+   MOBILE RESPONSIVENESS (Hamburger & Layout)
    ======================================================= */
 
+/* --- Hamburger Menu Button Styles --- */
+/* Initially hide the hamburger button on Desktop */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text); 
+    padding: 10px;
+    z-index: 1001; /* Ensure it sits above the mobile menu */
+}
+
 @media (max-width: 1024px) {
-  .hero-inner { grid-template-columns: 1fr; }
-  .grid-3 { grid-template-columns: repeat(2, 1fr); }
-  .pricing { grid-template-columns: repeat(2, 1fr); }
-  .testimonials { grid-template-columns: repeat(2, 1fr); }
-  .shop-grid { grid-template-columns: repeat(3, 1fr); }
-  
-  /* Admin Tablet */
-  .admin-panel { grid-template-columns: 1fr; }
-  .admin-sidebar { margin-bottom: 20px; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .pricing { grid-template-columns: repeat(2, 1fr); }
+    .testimonials { grid-template-columns: repeat(2, 1fr); }
+    .shop-grid { grid-template-columns: repeat(3, 1fr); }
+    
+    /* Admin Tablet Adjustments */
+    .admin-panel { grid-template-columns: 1fr; }
+    .admin-sidebar { margin-bottom: 20px; }
 }
 
 @media (max-width: 768px) {
-  /* Navigation - Stack Vertical */
-  .nav { flex-direction: column; gap: 15px; }
-  .nav-links { 
-      display: flex; /* Ensure it's visible */
-      flex-direction: column; 
-      width: 100%; 
-      text-align: center; 
-      gap: 10px; 
-  }
-  .nav-links a { 
-      background: rgba(255,255,255,0.06); 
-      display: block;
-      padding: 12px;
-  }
+    /* 1. Header Layout */
+    .nav {
+        flex-direction: row; /* Keep logo and burger side-by-side */
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
 
-  /* Hero */
-  .hero h1 { font-size: 2.5rem; }
-  
-  /* Grids - Force 1 Column */
-  .grid-2, .grid-3, .grid-4, .pricing, .testimonials, .shop-grid { 
-      grid-template-columns: 1fr !important; 
-  }
-  
-  /* Forms */
-  .form .row { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
+    /* 2. Show the Hamburger Button */
+    .hamburger {
+        display: block;
+    }
 
-  /* Admin Dashboard Mobile */
-  .dashboard-stats { grid-template-columns: 1fr; }
-  .gallery-grid, .shop-items-list { grid-template-columns: 1fr; }
-  .testimonial-item, .shop-item-admin { flex-direction: column; text-align: center; }
-  .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
-  
-  /* Footer */
-  .footer .inner { flex-direction: column; gap: 20px; text-align: center; }
+    /* 3. Mobile Navigation Menu (Hidden by Default) */
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Hidden off-screen to the right */
+        height: 100vh;
+        width: 75%; /* Width of the menu */
+        background-color: var(--bg-elev); /* Match your theme background */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: right 0.3s ease-in-out;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        z-index: 1000;
+        gap: 20px;
+        padding-top: 60px; /* Space for close button if needed */
+    }
+
+    /* 4. Active State (Slide in) */
+    .nav-links.active {
+        right: 0;
+    }
+
+    /* 5. Mobile Menu Links */
+    .nav-links a {
+        font-size: 1.2rem;
+        width: 100%;
+        text-align: center;
+        padding: 15px 0;
+        color: var(--text);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .nav-links a:hover {
+        background: rgba(255,255,255,0.06);
+    }
+
+    /* --- General Layout Adjustments --- */
+    /* Hero Text */
+    .hero h1 { font-size: 2.5rem; }
+    
+    /* Force Single Column Grids */
+    .grid-2, .grid-3, .grid-4, .pricing, .testimonials, .shop-grid { 
+        grid-template-columns: 1fr !important; 
+    }
+    
+    /* Forms */
+    .form .row { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+
+    /* Admin Dashboard Mobile */
+    .dashboard-stats { grid-template-columns: 1fr; }
+    .gallery-grid, .shop-items-list { grid-template-columns: 1fr; }
+    .testimonial-item, .shop-item-admin { flex-direction: column; text-align: center; }
+    .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    
+    /* Footer */
+    .footer .inner { flex-direction: column; gap: 20px; text-align: center; }
 }

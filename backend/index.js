@@ -27,11 +27,8 @@ const portfolioRoutes = require('./routes/portfolio_items');
 const galleryRoutes = require('./routes/gallery_images');
 const testimonialsRoutes = require('./routes/testimonials');
 const productsRoutes = require('./routes/shop_products');
-const servicesRoutes = require('./routes/services');
 const ordersRoutes = require('./routes/orders');
 const orderItemsRoutes = require('./routes/order_items');
-const settingsRoutes = require('./routes/settings');
-const analyticsRoutes = require('./routes/analytics');
 
 // Attach routes to paths
 app.use('/api/users', usersRoutes);
@@ -41,11 +38,8 @@ app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/testimonials', testimonialsRoutes);
 app.use('/api/products', productsRoutes);
-app.use('/api/services', servicesRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/order-items', orderItemsRoutes);
-app.use('/api/settings', settingsRoutes);
-app.use('/api/analytics', analyticsRoutes);
 
 // ---------------------------
 // HEALTH CHECK

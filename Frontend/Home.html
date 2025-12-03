@@ -1,89 +1,102 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="google-site-verification" content="t3aP9Zjuor5Z981KHbhM7WDi5fPghe-vsIS1wA2-mEg" />
-	<title>Boundless Moments — Home</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="t3aP9Zjuor5Z981KHbhM7WDi5fPghe-vsIS1wA2-mEg" />
+    <title>Boundless Moments — Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<header class="header">
-		<div class="container nav">
-			<div class="brand">Boundless Moments</div>
-			<nav class="nav-links">
-				<a href="home.html">Home</a>
-				<a href="about.html">About</a>
-				<a href="portfolio.html">Portfolio</a>
-				<a href="gallery.html">Gallery</a>
-				<a href="services.html">Services</a>
-				<a href="skills.html">Skills</a>
-				<a href="testimonials.html">Testimonials</a>
-				<a href="contact.html">Contact</a>
-				<a href="booking.html">Booking</a>
-				<a href="shop.html">Shop</a>
-				<a href="admin.html">Admin</a>
-			</nav>
-		</div>
-	</header>
+    <header class="header">
+        <div class="container nav">
+            <div class="brand">Boundless Moments</div>
+            
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
 
-	<main>
-		<section class="hero section">
-			<div class="container hero-inner">
-				<div class="fade-in">
-					<div class="kicker">Photography Studio</div>
-					<h1>Capturing Boundless Moments with Artistry and Soul</h1>
-					<p>We craft timeless visual stories across weddings, portraits, events, and more. Explore our world of light, color, and emotion.</p>
-					<div class="hero-cta">
-						<a class="button brand" href="portfolio.html">View Portfolio</a>
-						<a class="button ghost" href="contact.html">Get in Touch</a>
-					</div>
-				</div>
-				<div class="hero-media fade-in">
-					<img src="./cam.jpg" alt="Camera on table">
-				</div>
-			</div>
-		</section>
+            <nav class="nav-links" id="nav-links">
+                <a href="Home.html">Home</a>
+                <a href="About.html">About</a>
+                <a href="Portfolio.html">Portfolio</a>
+                <a href="Gallery.html">Gallery</a>
+                <a href="Skills.html">Skills</a>
+                <a href="Testimonials.html">Testimonials</a>
+                <a href="Contact.html">Contact</a>
+                <a href="Booking.html">Booking</a>
+                <a href="Shop.html">Shop</a>
+                <a href="Admin.html">Admin</a>
+            </nav>
+        </div>
+    </header>
 
-		<section class="section">
-			<div class="container">
-				<h2 class="fade-in">Featured Collections</h2>
-				<div class="grid grid-3">
-					<a class="card fade-in" href="portfolio.html">
-						<img src="https://images.unsplash.com/photo-1523289333742-be1143f6b766?q=80&auto=format&fit=crop&w=1200" alt="Wedding">
-						<h3>Weddings</h3>
-						<p>Elegant, candid, and heartfelt ceremonies.</p>
-					</a>
-					<a class="card fade-in" href="portfolio.html">
-						<img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&auto=format&fit=crop&w=1200" alt="Portrait">
-						<h3>Portraits</h3>
-						<p>Personality-forward portraiture in studio and on-location.</p>
-					</a>
-					<a class="card fade-in" href="portfolio.html">
-						<img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&auto=format&fit=crop&w=1200" alt="Nature">
-						<h3>Nature</h3>
-						<p>Scenic landscapes and the poetry of the wild.</p>
-					</a>
-				</div>
-			</div>
-		</section>
-	</main>
+    <main>
+        <section class="hero section">
+            <div class="container hero-inner">
+                <div class="fade-in">
+                    <div class="kicker">Photography Studio</div>
+                    <h1>Capturing Boundless Moments with Artistry and Soul</h1>
+                    <p>We craft timeless visual stories across weddings, portraits, events, and more. Explore our world of light, color, and emotion.</p>
+                    <div class="hero-cta">
+                        <a class="button brand" href="portfolio.html">View Portfolio</a>
+                        <a class="button ghost" href="contact.html">Get in Touch</a>
+                    </div>
+                </div>
+                <div class="hero-media fade-in">
+                    <img src="./cam.jpg" alt="Camera on table">
+                </div>
+            </div>
+        </section>
 
-	<footer class="footer">
-		<div class="container inner">
-			<div class="muted">© <span id="year"></span> Boundless Moments</div>
-			<div class="social">
-				<a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-				<a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-				<a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-			</div>
-		</div>
-	</footer>
+        <section class="section">
+            <div class="container">
+                <h2 class="fade-in">Featured Collections</h2>
+                <div class="grid grid-3">
+                    <a class="card fade-in" href="portfolio.html">
+                        <img src="https://images.unsplash.com/photo-1523289333742-be1143f6b766?q=80&auto=format&fit=crop&w=1200" alt="Wedding">
+                        <h3>Weddings</h3>
+                        <p>Elegant, candid, and heartfelt ceremonies.</p>
+                    </a>
+                    <a class="card fade-in" href="portfolio.html">
+                        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&auto=format&fit=crop&w=1200" alt="Portrait">
+                        <h3>Portraits</h3>
+                        <p>Personality-forward portraiture in studio and on-location.</p>
+                    </a>
+                    <a class="card fade-in" href="portfolio.html">
+                        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&auto=format&fit=crop&w=1200" alt="Nature">
+                        <h3>Nature</h3>
+                        <p>Scenic landscapes and the poetry of the wild.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
 
-	<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-	<script src="script.js"></script>
+    <footer class="footer">
+        <div class="container inner">
+            <div class="muted">© <span id="year"></span> Boundless Moments</div>
+            <div class="social">
+                <a href="https://www.facebook.com/share/1HAQ4LihSu/?mibextid=wwXIfr" aria-label="Facebook"
+					target="_blank">
+					<i class="fa-brands fa-facebook"></i>
+				</a>
+				<a href="https://www.instagram.com/gyanendra.bohara.14?igsh=MWdqYWk4NXp5YzQxdw%3D%3D&utm_source=qr"
+					aria-label="Instagram" target="_blank">
+					<i class="fa-brands fa-instagram"></i>
+				</a>
+
+				<a href="https://www.linkedin.com/in/gyanendra-bohara-970200259/" aria-label="LinkedIn" target="_blank">
+					<i class="fa-brands fa-linkedin"></i>
+				</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    <script src="script.js"></script>
 </body>
 </html>

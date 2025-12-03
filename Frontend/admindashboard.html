@@ -72,17 +72,22 @@
         opacity: 1;
     }
   </style>
-  </head>
+</head>
 <body>
   <header class="header">
     <div class="container nav">
       <div class="brand">Boundless Moments</div>
-      <nav class="nav-links">
+      
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+          <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <nav class="nav-links" id="nav-links">
         <a href="Home.html">Home</a>
         <a href="About.html">About</a>
         <a href="Portfolio.html">Portfolio</a>
         <a href="Gallery.html">Gallery</a>
-        <a href="Services.html">Services</a>
+        
         <a href="Skills.html">Skills</a>
         <a href="Testimonials.html">Testimonials</a>
         <a href="Contact.html">Contact</a>
@@ -384,6 +389,30 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    // Mobile menu toggle specifically for the admin dashboard if it relies on admindashboard.js, 
+    // otherwise the main script.js handles it if included. 
+    // Since admindashboard.html only includes admindashboard.js, we add the toggle logic here inline 
+    // OR you should ensure admindashboard.js has the toggle logic.
+    
+    // Adding the toggle logic here to be safe since script.js isn't linked in this file:
+    document.addEventListener('DOMContentLoaded', () => {
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                const icon = hamburger.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+    });
   </script>
   <script src="admindashboard.js"></script>
 </body>
